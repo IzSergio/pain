@@ -1,0 +1,22 @@
+{% extends "bootstrap/base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+<!-- задаем заголовок страницы -->
+{% block title %}This is a page{% endblock %}
+<!-- блок body -->
+{% block content %}
+{{ wtf.quick_form(form, method='post',enctype="multipart/form-data", action="iz") }}
+<!-- один из стандартных тэгов html - заголовок второго уровня -->
+<h2>Results: </h2> 
+<!-- проверяем есть ли данные классификации -->
+{% if image_res %}
+ <h2>Image is here: </h2>
+ <!-- отображаем загруженное изображение с закругленными углами -->
+ <!-- если оно есть (после submit) -->
+ <p>{{image_name}}
+ <p><img src={{image_name}} class="img-rounded" alt="My Image" width = 224 height=224 />
+ {% endif %} 
+{% else %}
+ <h3> There are no pictures yet...</h3>
+{% endif %}
+
+{% endblock %} 
