@@ -51,6 +51,7 @@ from io import BytesIO
 # для устранения в имени символов типа / и т.д.
 from werkzeug.utils import secure_filename
 import os
+from iz import makegraphs
 # подключаем наш модуль и переименовываем
 # для исключения конфликта имен
 # метод обработки запроса GET и POST от клиента
@@ -60,23 +61,23 @@ def iz():
  form = ContrastForm()
  # обнуляем переменные передаваемые в форму
  filename = None
- file2 = None
+ file2 = {}
  cval = 0
  # проверяем нажатие сабмит и валидацию введенных данных
  if form.validate_on_submit():
-  files = os.listdir('./src')
-  for f in files:
-   os.remove('./src/'+f)
+  files = os.listdir('./src') # 
+  for f in files: #
+   os.remove('./src/'+f) # 
   # файлы с изображениями читаются из каталога src
   filename = os.path.join('./src', secure_filename(form.upload.data.filename)) #не нужно
   # сохраняем загруженный файл
   form.upload.data.save(filename)
   fimage = Image.open(BytesIO(form.upload.data))
-  # передаем все изображения в каталоге на классификацию
-  # можете изменить немного код и передать только загруженный файл
-  images = makegraphs(fimage,form.number.data)
- # передаем форму в шаблон, так же передаем имя файла и результат работы нейронной
- # сети если был нажат сабмит, либо передадим falsy значения
+  cval = form.number.data
+  # передать только загруженный файл
+  file2 = makegraphs(fimage,cval)
+ # передаем форму в шаблон
+ # если был нажат сабмит, либо передадим falsy значения
  return render_template('iz.html',form=form,image_name=filename, image_res=file2,cval=cval)
 
 from flask import request
@@ -85,7 +86,7 @@ import json
 # метод для обработки запроса от пользователя
 @app.route("/apiiz",methods=['GET', 'POST'])
 def apinet():
- neurodic = {}
+ result = {}
  # проверяем что в запросе json данные
  if request.mimetype == 'application/json': 
   # получаем json данные
@@ -99,17 +100,13 @@ def apinet():
   cfile = base64.b64decode(filebytes)
   # чтобы считать изображение как файл из памяти используем BytesIO
   img = Image.open(BytesIO(cfile))
-  decode = neuronet.getresult([img])
-  neurodic = {}
-  for elem in decode:
-   neurodic[elem[0][1]] = str(elem[0][2])
-   print(elem)
+  result = makegraphs([img])
   # пример сохранения переданного файла
   # handle = open('./static/f.png','wb')
   # handle.write(cfile)
   # handle.close()
  # преобразуем словарь в json строку
- ret = json.dumps(neurodic)
+ ret = json.dumps(result)
  # готовим ответ пользователю
  resp = Response(response=ret,
                  status=200,
