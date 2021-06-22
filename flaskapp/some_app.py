@@ -14,7 +14,7 @@ from flask import render_template
 from flask_wtf import FlaskForm,RecaptchaField
 from wtforms import StringField, SubmitField, TextAreaField, DecimalField
 # модули валидации полей формы
-from wtforms.validators import DataRequired, InputRequired, 
+from wtforms.validators import DataRequired, InputRequired, NumberRange
 from flask_wtf.file import FileField, FileAllowed, FileRequired
 # используем csrf токен, можете генерировать его сами
 SECRET_KEY = 'secret'
@@ -34,7 +34,7 @@ class ContrastForm(FlaskForm):
  # валидатор проверяет введение данных после нажатия кнопки submit
  # и указывает пользователю ввести данные если они не введены
  # или неверны
- number = DecimalField('Contrast value', validators=[InputRequired(),NumberRange(min=0,max=10,message='Please be reasonable and give something between 0 and 10')])
+ number = DecimalField('Contrast value', validators=[InputRequired(),NumberRange(min=0,max=10,message='Please give a reasonable value between 0 and 10')])
  # поле загрузки файла
  # здесь валидатор укажет ввести правильные файлы
  upload = FileField('Load image', validators=[ FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
@@ -62,23 +62,20 @@ def iz():
  # обнуляем переменные передаваемые в форму
  filename = None
  file2 = {}
- cval = 0
  # проверяем нажатие сабмит и валидацию введенных данных
  if form.validate_on_submit():
-  files = os.listdir('./src') # 
-  for f in files: #
+  for f in os.listdir('./src'): #
    os.remove('./src/'+f) # 
   # файлы с изображениями читаются из каталога src
   filename = os.path.join('./src', secure_filename(form.upload.data.filename)) #не нужно
   # сохраняем загруженный файл
   form.upload.data.save(filename)
   fimage = Image.open(BytesIO(form.upload.data))
-  cval = form.number.data
   # передать только загруженный файл
-  file2 = makegraphs(fimage,cval)
+  file2 = makegraphs(fimage,form.number.data)
  # передаем форму в шаблон
  # если был нажат сабмит, либо передадим falsy значения
- return render_template('iz.html',form=form,image_name=filename, image_res=file2,cval=cval)
+ return render_template('iz.html',form=form,image_name=filename, image_res=file2)
 
 from flask import request
 from flask import Response
@@ -100,7 +97,9 @@ def apinet():
   cfile = base64.b64decode(filebytes)
   # чтобы считать изображение как файл из памяти используем BytesIO
   img = Image.open(BytesIO(cfile))
-  result = makegraphs([img])
+  
+  nums = base64.b64decode(data['contrast'])
+  result = makegraphs(img,nums)
   # пример сохранения переданного файла
   # handle = open('./static/f.png','wb')
   # handle.write(cfile)
