@@ -34,7 +34,7 @@ class ContrastForm(FlaskForm):
  # валидатор проверяет введение данных после нажатия кнопки submit
  # и указывает пользователю ввести данные если они не введены
  # или неверны
- number = DecimalField('Contrast value', validators=[InputRequired(),NumberRange(min=0,max=10,message='Please give a reasonable value between 0 and 10')])
+ number = DecimalField('Contrast value', validators=[InputRequired(),NumberRange(min=0,max=100,message='Please give a value between 0 and 100')])
  # поле загрузки файла
  # здесь валидатор укажет ввести правильные файлы
  upload = FileField('Load image', validators=[ FileRequired(), FileAllowed(['jpg', 'png', 'jpeg'], 'Images only!')])
