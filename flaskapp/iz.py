@@ -20,7 +20,7 @@ def distr(img):
 
 def makegraphs(img, cval):
     file = img.filename
-    res = [img.filename, '.'.join(poo.split('.')[:-1]) + 'graph.png', 'new' + file, 'new' + '.'.join(poo.split('.')[:-1]) + 'graph.png']
+    res = [img.filename, '.'.join(file.split('.')[:-1]) + 'graph.png', 'new' + file, 'new' + '.'.join(file.split('.')[:-1]) + 'graph.png']
     img.save(res[0])
 
     fig, ax = plt.subplots(figsize=(10, 10))
