@@ -6,23 +6,14 @@
 {% block content %}
 {{ wtf.quick_form(form, method='post',enctype="multipart/form-data", action="iz") }}
 <!-- один из стандартных тэгов html - заголовок второго уровня -->
-{% if image_name}
-<h2>Your image is here: </h2>
- <!-- отображаем загруженное изображение с закругленными углами -->
- <!-- если оно есть (после submit) -->
- <p>{{image_name}}
- <p><img src={{image_name}} class="img-rounded" alt="My Image" width = 224 height=224 />
- {% endif %} 
-{% else %}
- <h3> There are no pictures yet...</h3>
-{% endif %}
+{% if image_res}
 <h2>Results: </h2> 
 <!-- проверяем есть ли данные -->
 {% if image_res %}
  <!-- запускаем цикл прохода по словарю и отображаем ключ-значение -->
  <!-- классифицированных файлов -->
  {% for name in image_res.items() %}
- <p><img src={{name}} class="img-rounded" alt="resulting image" width = 224 height=224 />
+ <p><img src={{name}} class="img-rounded" alt="resulting image" />
  {% endfor %} 
 {% endif %}
 {% endblock %} 
