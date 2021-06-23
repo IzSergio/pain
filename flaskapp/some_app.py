@@ -68,8 +68,8 @@ def iz():
   # файлы с изображениями читаются из каталога src
   filename = os.path.join('./src', secure_filename(form.upload.data.filename)) #не нужно
   # сохраняем загруженный файл
-  fimage = Image.open(BytesIO(form.upload.data))
-  fimage.filename = filename
+  form.upload.data.save(filename)
+  fimage = Image.open(filename)
   # передать только загруженный файл
   filenames = makegraphs(fimage,form.number.data)
  # передаем форму в шаблон
