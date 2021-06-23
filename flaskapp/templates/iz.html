@@ -6,14 +6,13 @@
 {% block content %}
 {{ wtf.quick_form(form, method='post',enctype="multipart/form-data", action="iz") }}
 <!-- один из стандартных тэгов html - заголовок второго уровня -->
-{% if image_res}
+{% if image_res %}
 <h2>Results: </h2> 
 <!-- проверяем есть ли данные -->
-{% if image_res %}
  <!-- запускаем цикл прохода по словарю и отображаем ключ-значение -->
  <!-- классифицированных файлов -->
  {% for name in image_res.items() %}
- <p><img src={{name}} class="img-rounded" alt="resulting image" />
+ <p><img src={{name}} class="img-rounded" alt=name />
  {% endfor %} 
 {% endif %}
 {% endblock %} 
