@@ -60,8 +60,7 @@ def iz():
  # создаем объект формы
  form = ContrastForm()
  # обнуляем переменные передаваемые в форму
- filename = None
- file2 = {}
+ filenames = []
  # проверяем нажатие сабмит и валидацию введенных данных
  if form.validate_on_submit():
   for f in os.listdir('./src'): #
@@ -72,10 +71,10 @@ def iz():
   fimage = Image.open(BytesIO(form.upload.data))
   fimage.filename = filename
   # передать только загруженный файл
-  file2 = makegraphs(fimage,form.number.data)
+  filenames = makegraphs(fimage,form.number.data)
  # передаем форму в шаблон
  # если был нажат сабмит, либо передадим falsy значения
- return render_template('iz.html',form=form,image_name=filename, image_res=file2)
+ return render_template('iz.html',form=form,image_names=filenames)
 
 from flask import request
 from flask import Response
