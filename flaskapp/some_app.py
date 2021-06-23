@@ -74,7 +74,7 @@ def iz():
   filenames = makegraphs(fimage,form.number.data)
  # передаем форму в шаблон
  # если был нажат сабмит, либо передадим falsy значения
- return render_template('iz.html',form=form,image_names=filenames)
+ return render_template('iz.html',form=form,image_res=filenames)
 
 from flask import request
 from flask import Response
