@@ -63,9 +63,9 @@ def iz():
  filenames = []
  # проверяем нажатие сабмит и валидацию введенных данных
  if form.validate_on_submit():
-  print('dir before: {}'.format(os.listdir('/src')))
+  print('dir before: {}'.format(os.listdir('./src')))
   for f in os.listdir('./src'): #
-   os.remove('/src/'+f) # 
+   os.remove('./src/'+f) # 
   # файлы с изображениями читаются из каталога src
   filename = os.path.join('./src', secure_filename(form.upload.data.filename)) #не нужно
   # сохраняем загруженный файл
