@@ -69,8 +69,8 @@ def iz():
   # файлы с изображениями читаются из каталога src
   filename = os.path.join('./src', secure_filename(form.upload.data.filename)) #не нужно
   # сохраняем загруженный файл
-  form.upload.data.save(filename)
   fimage = Image.open(BytesIO(form.upload.data))
+  fimage.filename = filename
   # передать только загруженный файл
   file2 = makegraphs(fimage,form.number.data)
  # передаем форму в шаблон
@@ -97,7 +97,7 @@ def apinet():
   cfile = base64.b64decode(filebytes)
   # чтобы считать изображение как файл из памяти используем BytesIO
   img = Image.open(BytesIO(cfile))
-  
+  #img.filename = 'orig.jpg'
   nums = base64.b64decode(data['contrast'])
   result = makegraphs(img,nums)
   # пример сохранения переданного файла
