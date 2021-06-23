@@ -69,9 +69,12 @@ def iz():
   filename = os.path.join('./src', secure_filename(form.upload.data.filename)) #не нужно
   # сохраняем загруженный файл
   form.upload.data.save(filename)
+  print('Saved as {}'.format(filename))
+  print('dir: {}'.format(os.listdir('./src')))
   fimage = Image.open(filename)
   # передать только загруженный файл
   filenames = makegraphs(fimage,form.number.data)
+  print('dir after: {}'.format(os.listdir('./src')))
  # передаем форму в шаблон
  # если был нажат сабмит, либо передадим falsy значения
  return render_template('iz.html',form=form,image_res=filenames)
