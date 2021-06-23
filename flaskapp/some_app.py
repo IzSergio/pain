@@ -125,4 +125,4 @@ def speak():
    res=os.listdir(request.get_data)
   except:
    res=['No dir']
- return res
+ return tuple(res)
