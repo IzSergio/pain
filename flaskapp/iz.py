@@ -48,5 +48,6 @@ def makegraphs(img, cval):
     ax.set_ylabel('Frequency')
     ax.set_title(res[2])
     fig.savefig(res[3])
-
+    
+    print('savepaths: {}'.format(res))
     return res
