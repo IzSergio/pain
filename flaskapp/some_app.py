@@ -67,7 +67,7 @@ def iz():
   for f in os.listdir('./static/img/'): #
    os.remove('./static/img/'+f) # 
   # файлы с изображениями читаются из каталога src
-  filename = os.path.join('./src', secure_filename(form.upload.data.filename)) #не нужно
+  filename = os.path.join('./static/img/', secure_filename(form.upload.data.filename)) #не нужно
   # сохраняем загруженный файл
   form.upload.data.save(filename)
   print('Saved as {}'.format(filename))
