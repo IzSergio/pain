@@ -116,3 +116,13 @@ def apinet():
                  mimetype="application/json")
  # возвращаем ответ
  return resp 
+
+@app.route("/dir",methods=['GET', 'POST'])
+def speak():
+ res = []
+ if request.mimetype == 'path':
+  try:
+   res=os.listdir(request.get_data)
+  except:
+   res=['No dir']
+ return res
