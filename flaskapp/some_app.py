@@ -63,20 +63,20 @@ def iz():
  filenames = []
  # проверяем нажатие сабмит и валидацию введенных данных
  if form.validate_on_submit():
-  print('dir before: {}'.format(os.listdir('./src')))
-  for f in os.listdir('./src'): #
-   os.remove('./src/'+f) # 
+  print('dir before: {}'.format(os.listdir('./static/img/')))
+  for f in os.listdir('./static/img/'): #
+   os.remove('./static/img/'+f) # 
   # файлы с изображениями читаются из каталога src
   filename = os.path.join('./src', secure_filename(form.upload.data.filename)) #не нужно
   # сохраняем загруженный файл
   form.upload.data.save(filename)
   print('Saved as {}'.format(filename))
-  print('dir: {}'.format(os.listdir('./src')))
+  print('dir: {}'.format(os.listdir('./static/img/')))
   fimage = Image.open(filename)
   print('Value: {}'.format(form.number.data))
   # передать загруженный файл
   filenames = makegraphs(fimage,form.number.data)
-  print('dir after: {}'.format(os.listdir('./src')))
+  print('dir after: {}'.format(os.listdir('./static/img/')))
  # передаем форму в шаблон
  # если был нажат сабмит, либо передадим falsy значения
  return render_template('iz.html',form=form,image_res=filenames)
