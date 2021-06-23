@@ -63,9 +63,9 @@ def iz():
  filenames = []
  # проверяем нажатие сабмит и валидацию введенных данных
  if form.validate_on_submit():
-  print('dir before: {}'.format(os.listdir('./src')))
+  print('dir before: {}'.format(os.listdir('/src')))
   for f in os.listdir('./src'): #
-   os.remove('./src/'+f) # 
+   os.remove('/src/'+f) # 
   # файлы с изображениями читаются из каталога src
   filename = os.path.join('./src', secure_filename(form.upload.data.filename)) #не нужно
   # сохраняем загруженный файл
@@ -73,7 +73,8 @@ def iz():
   print('Saved as {}'.format(filename))
   print('dir: {}'.format(os.listdir('./src')))
   fimage = Image.open(filename)
-  # передать только загруженный файл
+  print('Value: {}'.format(form.number.data))
+  # передать загруженный файл
   filenames = makegraphs(fimage,form.number.data)
   print('dir after: {}'.format(os.listdir('./src')))
  # передаем форму в шаблон
