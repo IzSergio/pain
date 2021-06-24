@@ -5,12 +5,10 @@
 <!-- блок body -->
 {% block content %}
 {{ wtf.quick_form(form, method='post',enctype="multipart/form-data", action="iz") }}
-<!-- один из стандартных тэгов html - заголовок второго уровня -->
 {% if image_res %}
-<h2>Results: </h2> 
 <!-- проверяем есть ли данные -->
- <!-- запускаем цикл прохода по словарю и отображаем ключ-значение -->
- <!-- классифицированных файлов -->
+<h2>Results: </h2> 
+ <!-- запускаем цикл прохода по списку и отображаем -->
  {% for name in image_res %}
  <p><img src={{name}} class="img-rounded" alt={{name}} />
  {% endfor %} 
