@@ -7,10 +7,12 @@
 {{ wtf.quick_form(form, method='post',enctype="multipart/form-data", action="iz") }}
 {% if image_res %}
 <!-- проверяем есть ли данные -->
-<h2>Results: </h2> 
+<h2>Results: </h2>
+<table> 
  <!-- запускаем цикл прохода по списку и отображаем -->
  {% for name in image_res %}
- <p><img src={{name}} class="img-rounded" alt={{name}} />
+ <tr><td>{{name}}</td><td><img src={{name}} class="img-rounded" alt={{name}} width=400px /></td><td>{{image_res[name]}}</td></tr>
  {% endfor %} 
+</table>
 {% endif %}
 {% endblock %} 

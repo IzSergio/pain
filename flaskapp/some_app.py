@@ -33,7 +33,16 @@ class ContrastForm(FlaskForm):
  # валидатор проверяет введение данных после нажатия кнопки submit
  # и указывает пользователю ввести данные если они не введены
  # или неверны
- number = DecimalField('Contrast value', 
+ number = DecimalField('Contrast value 1 for upper left', 
+                       validators=[InputRequired(),
+                                   NumberRange(min=0,max=100,message='Please give a value between 0 and 100')])
+ number2 = DecimalField('Contrast value 2 for upper right', 
+                       validators=[InputRequired(),
+                                   NumberRange(min=0,max=100,message='Please give a value between 0 and 100')])
+ number3 = DecimalField('Contrast value 3 for lower left', 
+                       validators=[InputRequired(),
+                                   NumberRange(min=0,max=100,message='Please give a value between 0 and 100')])
+ number4 = DecimalField('Contrast value 4 for lower right', 
                        validators=[InputRequired(),
                                    NumberRange(min=0,max=100,message='Please give a value between 0 and 100')])
  # поле загрузки файла
@@ -53,22 +62,20 @@ from io import BytesIO
 from werkzeug.utils import secure_filename
 import os
 from iz import makegraphs
-# подключаем наш модуль и переименовываем
-# для исключения конфликта имен
 # метод обработки запроса GET и POST от клиента
 @app.route("/iz",methods=['GET', 'POST'])
 def iz():
  # создаем объект формы
  form = ContrastForm()
  # обнуляем переменные передаваемые в форму
- filenames = []
+ filenames = {}
  # проверяем нажатие сабмит и валидацию введенных данных
  if form.validate_on_submit():
   print('dir before: {}'.format(os.listdir('./static/img/')))
   for f in os.listdir('./static/img/'): #
    os.remove('./static/img/'+f) # 
   # файлы с изображениями читаются из каталога src
-  filename = os.path.join('./static/img/', secure_filename(form.upload.data.filename)) #не нужно
+  filename = os.path.join('./static/img/', secure_filename(form.upload.data.filename)) #
   # сохраняем загруженный файл
   form.upload.data.save(filename)
   print('Saved as {}'.format(filename))
@@ -76,11 +83,12 @@ def iz():
   fimage = Image.open(filename)
   print('Value: {}'.format(form.number.data))
   # передать загруженный файл
-  filenames = makegraphs(fimage,form.number.data)
+  filenames = makegraphs(fimage,[form.number.data, form.number2.data, form.number3.data, form.number4.data])
   print('dir after: {}'.format(os.listdir('./static/img/')))
  # передаем форму в шаблон
  # если был нажат сабмит, либо передадим falsy значения
  return render_template('iz.html',form=form,image_res=filenames)
+
 
 from flask import request
 from flask import Response
